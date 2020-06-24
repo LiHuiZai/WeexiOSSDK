@@ -481,12 +481,27 @@ do {\
     
     // set font
     UIFont *font = [WXUtility fontWithSize:_fontSize textWeight:_fontWeight textStyle:_fontStyle fontFamily:_fontFamily scaleFactor:self.weexInstance.pixelScaleFactor useCoreText:[self useCoreText]];
-    CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName,
-                                           font.pointSize,
-                                           NULL);
-    if (ctFont) {
-        [attributedString addAttribute:(id)kCTFontAttributeName value:(__bridge id)(ctFont) range:NSMakeRange(0, string.length)];
-        CFRelease(ctFont);
+//    CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName,
+//                                           font.pointSize,
+//                                           NULL);
+//    if (ctFont) {
+//        [attributedString addAttribute:(id)kCTFontAttributeName value:(__bridge id)(ctFont) range:NSMakeRange(0, string.length)];
+//        CFRelease(ctFont);
+//    }
+    if (WX_SYS_VERSION_LESS_THAN(@"13.0")) {
+        
+        CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName,
+                                                    font.pointSize,
+                                                    NULL);
+        if (ctFont) {
+                [attributedString addAttribute:(id)kCTFontAttributeName value:(__bridge id)(ctFont) range:NSMakeRange(0, string.length)];
+                CFRelease(ctFont);
+            }
+    } else{
+        if (font) {
+                [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, string.length)];
+        }
+            
     }
     
     if(_textDecoration == WXTextDecorationUnderline){
