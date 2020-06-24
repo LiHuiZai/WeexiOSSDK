@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
                    A framework for building Mobile cross-platform UI
                    DESC
 
-  s.homepage     = "https://github.com/bmfe/WeexiOSSDK"
+  s.homepage     = "https://github.com/LiHuiZai/WeexiOSSDK.git"
   s.license = {
     :type => 'Copyright',
     :text => <<-LICENSE
