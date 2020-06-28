@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
                    A framework for building Mobile cross-platform UI
                    DESC
 
-  s.homepage     = "https://github.com/LiHuiZai/WeexiOSSDK.git"
+  s.homepage     = "https://github.com/LiHuiZai/WeexiOSSDK"
   s.license = {
     :type => 'Copyright',
     :text => <<-LICENSE
@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
                    }
   s.platform     = :ios
   s.ios.deployment_target = '8.0'
-  s.source       = { :git => "https://github.com/bmfe/WeexiOSSDK.git", :tag => s.version.to_s }
+  s.source       = { :git => "https://github.com/LiHuiZai/WeexiOSSDK.git", :tag => s.version.to_s }
   s.source_files = 'WeexSDK/Sources/**/*.{h,m,mm,c,cpp}'
   s.resources = 'WeexSDK/Resources/*.js', 'WeexSDK/Resources/wx_load_error@3x.png'
 
