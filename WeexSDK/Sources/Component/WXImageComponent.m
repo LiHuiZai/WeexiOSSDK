@@ -38,6 +38,23 @@
 
 static dispatch_queue_t WXImageUpdateQueue;
 
+
+@interface WXImageView : UIImageView
+
+@end
+
+@implementation WXImageView
+
++ (Class)layerClass
+{
+    return [WXLayer class];
+}
+
+@end
+
+
+
+
 @interface WXImageComponent ()
 {
     NSString * _imageSrc;
@@ -207,7 +224,12 @@ WX_EXPORT_METHOD(@selector(save:))
 
 - (UIView *)loadView
 {
-    return [[UIImageView alloc] init];
+    if (@available(iOS 14.0, *)) {
+        return [[UIImageView alloc] init];
+    } else {
+        return [[WXImageView alloc] init];
+    }
+    
 }
 
 - (void)addEvent:(NSString *)eventName {
