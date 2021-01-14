@@ -146,6 +146,28 @@ WX_EXPORT_METHOD(@selector(goForward))
 //        [weakSelf fireEvent:@"message" params:initDic];
 //    };
     
+    // 配置页面自适应缩放
+        NSString *jscript = @"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);";
+        
+        NSString *promptCode = @"(function(){window.bmnative={closePage:function(){if(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.closePage&&window.webkit.messageHandlers.closePage.postMessage){window.webkit.messageHandlers.closePage.postMessage('')}else{return}},fireEvent:function(event,info){event=event||'eventName';info=info||'';if(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.bmnative&&window.webkit.messageHandlers.bmnative.postMessage){var params=JSON.stringify({event,info});window.webkit.messageHandlers.bmnative.postMessage(params)}else{return}}};return 2})();";
+
+        WKUserScript *userScript = [[WKUserScript alloc] initWithSource:jscript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
+        WKUserContentController *userContentController = [[WKUserContentController alloc] init];
+        [userContentController addUserScript:userScript];
+        // 添加HTML页面js的调用方法，这里默认添加的方法名称为getSlideData，可自行按需更改
+        [userContentController addScriptMessageHandler:self name:@"bmnative"];
+        [userContentController addScriptMessageHandler:self name:@"closePage"];
+        // 配置WKWebView
+        WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+        configuration.userContentController = userContentController;
+        // 显示WKWebView
+        _webview = [[WKWebView alloc] initWithFrame:self.view.frame configuration:configuration];
+        [self.view addSubview:_webview];
+        
+        [_webview evaluateJavaScript:promptCode completionHandler:^(id _Nullable object, NSError * _Nullable error) {
+                            NSLog(@" - %@ -- %@ --- ",error,object);
+        }];
+    
     self.source = _inInitsource;
     if (_url) {
         [self loadURL:_url];
@@ -363,6 +385,11 @@ WX_EXPORT_METHOD(@selector(goForward))
         }
         
         [[BMNotifactionCenter defaultCenter] emit: event  info: tmpDict];
+    }else if ([message.name isEqualToString:@"bmnative"]) {
+        // 获取HTML页面js调用相应方法获取的验证码服务返回值，方法名应与添加在HTML页面js调用方法名保持一致
+        NSDictionary *dic = [self convertjsonStringToDict:message.body];
+        [[BMNotifactionCenter defaultCenter] emit:[dic objectForKey:@"event"] info:[dic objectForKey:@"info"]];
+
     }
 }
 
