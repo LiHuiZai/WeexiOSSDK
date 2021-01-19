@@ -174,61 +174,61 @@ WX_EXPORT_METHOD(@selector(goForward))
     }
 }
 
-- (void)updateAttributes:(NSDictionary *)attributes
-{
-    if (attributes[@"src"]) {
-        self.url = attributes[@"src"];
-    }
+//- (void)updateAttributes:(NSDictionary *)attributes
+//{
+//    if (attributes[@"src"]) {
+//        self.url = attributes[@"src"];
+//    }
+//
+//    if (attributes[@"source"]) {
+//        self.inInitsource = attributes[@"source"];
+//        self.source = self.inInitsource;
+//    }
+//}
+//
+//- (void)addEvent:(NSString *)eventName
+//{
+//    if ([eventName isEqualToString:@"pagestart"]) {
+//        _startLoadEvent = YES;
+//    }
+//    else if ([eventName isEqualToString:@"pagefinish"]) {
+//        _finishLoadEvent = YES;
+//    }
+//    else if ([eventName isEqualToString:@"error"]) {
+//        _failLoadEvent = YES;
+//    }
+//}
 
-    if (attributes[@"source"]) {
-        self.inInitsource = attributes[@"source"];
-        self.source = self.inInitsource;
-    }
-}
-
-- (void)addEvent:(NSString *)eventName
-{
-    if ([eventName isEqualToString:@"pagestart"]) {
-        _startLoadEvent = YES;
-    }
-    else if ([eventName isEqualToString:@"pagefinish"]) {
-        _finishLoadEvent = YES;
-    }
-    else if ([eventName isEqualToString:@"error"]) {
-        _failLoadEvent = YES;
-    }
-}
-
-- (void)setUrl:(NSString *)url
-{
-    NSString* newURL = [url copy];
-    WX_REWRITE_URL(url, WXResourceTypeLink, self.weexInstance)
-    if (!newURL) {
-        return;
-    }
-    
-    if (![newURL isEqualToString:_url]) {
-        _url = newURL;
-        if (_url) {
-            [self loadURL:_url];
-        }
-    }
-}
-
-- (void) setSource:(NSString *)source
-{
-    NSString *newSource=[source copy];
-    if(!newSource || _url){
-        return;
-    }
-    if(![newSource isEqualToString:_source]){
-        _source=newSource;
-        if(_source){
-            [_webview loadHTMLString:_source baseURL:nil];
-        }
-    }
-    
-}
+//- (void)setUrl:(NSString *)url
+//{
+//    NSString* newURL = [url copy];
+//    WX_REWRITE_URL(url, WXResourceTypeLink, self.weexInstance)
+//    if (!newURL) {
+//        return;
+//    }
+//
+//    if (![newURL isEqualToString:_url]) {
+//        _url = newURL;
+//        if (_url) {
+//            [self loadURL:_url];
+//        }
+//    }
+//}
+//
+//- (void) setSource:(NSString *)source
+//{
+//    NSString *newSource=[source copy];
+//    if(!newSource || _url){
+//        return;
+//    }
+//    if(![newSource isEqualToString:_source]){
+//        _source=newSource;
+//        if(_source){
+//            [_webview loadHTMLString:_source baseURL:nil];
+//        }
+//    }
+//
+//}
 
 - (void)loadURL:(NSString *)url
 {
@@ -238,115 +238,115 @@ WX_EXPORT_METHOD(@selector(goForward))
     }
 }
 
-- (void)reload
-{
-    [self.webview reload];
-}
-
-- (void)goBack
-{
-    if ([self.webview canGoBack]) {
-        [self.webview goBack];
-    }
-}
-
-- (void)goForward
-{
-    if ([self.webview canGoForward]) {
-        [self.webview goForward];
-    }
-}
+//- (void)reload
+//{
+//    [self.webview reload];
+//}
+//
+//- (void)goBack
+//{
+//    if ([self.webview canGoBack]) {
+//        [self.webview goBack];
+//    }
+//}
+//
+//- (void)goForward
+//{
+//    if ([self.webview canGoForward]) {
+//        [self.webview goForward];
+//    }
+//}
 
 // This method will be abandoned slowly, use postMessage
-- (void)notifyWebview:(NSDictionary *) data
-{
-    NSString *json = [WXUtility JSONString:data];
-    NSString *code = [NSString stringWithFormat:@"(function(){var evt=null;var data=%@;if(typeof CustomEvent==='function'){evt=new CustomEvent('notify',{detail:data})}else{evt=document.createEvent('CustomEvent');evt.initCustomEvent('notify',true,true,data)}document.dispatchEvent(evt)}())", json];
-    [_webview evaluateJavaScript:code completionHandler:nil];
-}
+//- (void)notifyWebview:(NSDictionary *) data
+//{
+//    NSString *json = [WXUtility JSONString:data];
+//    NSString *code = [NSString stringWithFormat:@"(function(){var evt=null;var data=%@;if(typeof CustomEvent==='function'){evt=new CustomEvent('notify',{detail:data})}else{evt=document.createEvent('CustomEvent');evt.initCustomEvent('notify',true,true,data)}document.dispatchEvent(evt)}())", json];
+//    [_webview evaluateJavaScript:code completionHandler:nil];
+//}
 
 // Weex postMessage to web
-- (void)postMessage:(NSDictionary *)data {
-    WXSDKInstance *instance = [WXSDKEngine topInstance];
+//- (void)postMessage:(NSDictionary *)data {
+//    WXSDKInstance *instance = [WXSDKEngine topInstance];
+//
+//    NSString *bundleUrlOrigin = @"";
+//
+//    if (instance.pageName) {
+//        NSString *bundleUrl = [instance.scriptURL absoluteString];
+//        NSURL *url = [NSURL URLWithString:bundleUrl];
+//        bundleUrlOrigin = [NSString stringWithFormat:@"%@://%@%@", url.scheme, url.host, url.port ? [NSString stringWithFormat:@":%@", url.port] : @""];
+//    }
+//
+//    NSDictionary *initDic = @{
+//        @"type" : @"message",
+//        @"data" : data,
+//        @"origin" : bundleUrlOrigin
+//    };
+//
+//    NSString *json = [WXUtility JSONString:initDic];
+//
+//    NSString *code = [NSString stringWithFormat:@"(function (){window.dispatchEvent(new MessageEvent('message', %@));}())", json];
+//    [_webview evaluateJavaScript:code completionHandler:nil];
+//}
 
-    NSString *bundleUrlOrigin = @"";
+//#pragma mark Webview Delegate
+//
+//- (void)baseInfoWithCompletion:(void (^)(NSMutableDictionary<NSString *, id> *data))completion {
+//    NSMutableDictionary<NSString *, id> *info = [NSMutableDictionary new];
+//    [info setObject:self.webview.URL.absoluteString ?: @"" forKey:@"url"];
+//    [info setObject:@(self.webview.canGoBack) forKey:@"canGoBack"];
+//    [info setObject:@(self.webview.canGoForward) forKey:@"canGoForward"];
+//    [self.webview evaluateJavaScript:@"document.title" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+//        [info setObject:result ? result : @"" forKey:@"title"];
+//        if (completion) {
+//            completion(info);
+//        }
+//    }];
+//}
 
-    if (instance.pageName) {
-        NSString *bundleUrl = [instance.scriptURL absoluteString];
-        NSURL *url = [NSURL URLWithString:bundleUrl];
-        bundleUrlOrigin = [NSString stringWithFormat:@"%@://%@%@", url.scheme, url.host, url.port ? [NSString stringWithFormat:@":%@", url.port] : @""];
-    }
+//- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
+//{
+//
+//}
+//
+//- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+//{
+//    if (_finishLoadEvent) {
+//        [self baseInfoWithCompletion:^(NSMutableDictionary<NSString *,id> *data) {
+//            [self fireEvent:@"pagefinish" params:data domChanges:@{@"attrs": @{@"src":self.webview.URL.absoluteString}}];
+//        }];
+//    }
+//}
 
-    NSDictionary *initDic = @{
-        @"type" : @"message",
-        @"data" : data,
-        @"origin" : bundleUrlOrigin
-    };
+//- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
+//{
+//    if (_failLoadEvent) {
+//        [self baseInfoWithCompletion:^(NSMutableDictionary<NSString *,id> *data) {
+//            [data setObject:[error localizedDescription] forKey:@"errorMsg"];
+//            [data setObject:[NSString stringWithFormat:@"%ld", (long)error.code] forKey:@"errorCode"];
+//
+//            NSString * urlString = error.userInfo[NSURLErrorFailingURLStringErrorKey];
+//            if (urlString) {
+//                // webview.request may not be the real error URL, must get from error.userInfo
+//                [data setObject:urlString forKey:@"url"];
+//                if (![urlString hasPrefix:@"http"]) {
+//                    return;
+//                }
+//            }
+//            [self fireEvent:@"error" params:data];
+//        }];
+//    }
+//}
 
-    NSString *json = [WXUtility JSONString:initDic];
-
-    NSString *code = [NSString stringWithFormat:@"(function (){window.dispatchEvent(new MessageEvent('message', %@));}())", json];
-    [_webview evaluateJavaScript:code completionHandler:nil];
-}
-
-#pragma mark Webview Delegate
-
-- (void)baseInfoWithCompletion:(void (^)(NSMutableDictionary<NSString *, id> *data))completion {
-    NSMutableDictionary<NSString *, id> *info = [NSMutableDictionary new];
-    [info setObject:self.webview.URL.absoluteString ?: @"" forKey:@"url"];
-    [info setObject:@(self.webview.canGoBack) forKey:@"canGoBack"];
-    [info setObject:@(self.webview.canGoForward) forKey:@"canGoForward"];
-    [self.webview evaluateJavaScript:@"document.title" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-        [info setObject:result ? result : @"" forKey:@"title"];
-        if (completion) {
-            completion(info);
-        }
-    }];
-}
-
-- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
-{
-    
-}
-
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
-{
-    if (_finishLoadEvent) {
-        [self baseInfoWithCompletion:^(NSMutableDictionary<NSString *,id> *data) {
-            [self fireEvent:@"pagefinish" params:data domChanges:@{@"attrs": @{@"src":self.webview.URL.absoluteString}}];
-        }];
-    }
-}
-
-- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
-{
-    if (_failLoadEvent) {
-        [self baseInfoWithCompletion:^(NSMutableDictionary<NSString *,id> *data) {
-            [data setObject:[error localizedDescription] forKey:@"errorMsg"];
-            [data setObject:[NSString stringWithFormat:@"%ld", (long)error.code] forKey:@"errorCode"];
-            
-            NSString * urlString = error.userInfo[NSURLErrorFailingURLStringErrorKey];
-            if (urlString) {
-                // webview.request may not be the real error URL, must get from error.userInfo
-                [data setObject:urlString forKey:@"url"];
-                if (![urlString hasPrefix:@"http"]) {
-                    return;
-                }
-            }
-            [self fireEvent:@"error" params:data];
-        }];
-    }
-}
-
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-       if (_startLoadEvent) {
-           NSMutableDictionary<NSString *, id> *data = [NSMutableDictionary new];
-           [data setObject:navigationAction.request.URL.absoluteString ?:@"" forKey:@"url"];
-           [self fireEvent:@"pagestart" params:data];
-       }
-
-       decisionHandler(WKNavigationActionPolicyAllow);
-}
+//- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+//       if (_startLoadEvent) {
+//           NSMutableDictionary<NSString *, id> *data = [NSMutableDictionary new];
+//           [data setObject:navigationAction.request.URL.absoluteString ?:@"" forKey:@"url"];
+//           [self fireEvent:@"pagestart" params:data];
+//       }
+//
+//       decisionHandler(WKNavigationActionPolicyAllow);
+//}
 
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message{
     
